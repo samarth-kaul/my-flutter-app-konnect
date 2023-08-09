@@ -14,22 +14,29 @@ class _SignInState extends State<SignIn> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Konnect"),
+          title: Text(
+            "Konnect",
+            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          ),
           centerTitle: true,
         ),
         body: Center(
           child: GestureDetector(
-            onTap: ()
-            {
+            onTap: () {
               AuthMethods().signInWithGoogle(context);
             },
             child: Container(
+              height: 60,
+              width: 250,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(24),
-                color: Color(0xffDB4437),
+                color: Colors.green,
               ),
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Text("Sign-In with Google"),
+              padding: EdgeInsets.all(18),
+              child: Center(
+                child: Text("Sign-In with Google",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+              ),
             ),
           ),
         ),

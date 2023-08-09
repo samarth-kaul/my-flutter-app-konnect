@@ -92,7 +92,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   bottomLeft:
                   sendByMe ? Radius.circular(24) : Radius.circular(0),
                 ),
-                color: sendByMe ? Colors.deepPurple : Color(0xfff1f0f0),
+                color: sendByMe ? Colors.deepPurple : Colors.grey,
               ),
               padding: EdgeInsets.all(16),
               child: Text(
@@ -143,6 +143,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 16.0,
         backgroundColor: Colors.deepPurple,
         centerTitle: true,
         leading: GestureDetector(
@@ -151,14 +152,16 @@ class _ChatScreenState extends State<ChatScreen> {
           },
           child: Icon(
             Icons.arrow_back_ios_new,
-            color: Colors.white,
+            color: Colors.white70,
             size: 17,
           ),
         ),
         title: Text(
           widget.name,
           style: TextStyle(
-            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 25,
+            color: Colors.white70,
           ),
         ),
       ),

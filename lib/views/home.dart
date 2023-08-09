@@ -148,7 +148,6 @@ class _HomeState extends State<Home> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          elevation: 1,
           backgroundColor: Colors.deepPurple,
           title: Text(
             "Konnect",
