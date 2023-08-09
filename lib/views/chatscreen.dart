@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
 
@@ -74,8 +75,56 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  Widget chatMessageTile(String message, bool sendByMe) {
+    return Row(
+      mainAxisAlignment:
+      sendByMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+      children: [
+        Flexible(
+          child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(24),
+                  bottomRight:
+                  sendByMe ? Radius.circular(0) : Radius.circular(24),
+                  topRight: Radius.circular(24),
+                  bottomLeft:
+                  sendByMe ? Radius.circular(24) : Radius.circular(0),
+                ),
+                color: sendByMe ? Colors.deepPurple : Color(0xfff1f0f0),
+              ),
+              padding: EdgeInsets.all(16),
+              child: Text(
+                message,
+                style: TextStyle(color: Colors.white),
+              )),
+        ),
+      ],
+    );
+  }
+
+  Widget chatMessages() {
+    return StreamBuilder(
+      stream: messageStream,
+      builder: (context, snapshot) {
+        return snapshot.hasData
+            ? ListView.builder(
+            padding: EdgeInsets.only(bottom: 70, top: 16),
+            itemCount: snapshot.data.docs.length,
+            reverse: true,
+            itemBuilder: (context, index) {
+              DocumentSnapshot ds = snapshot.data.docs[index];
+              return chatMessageTile(
+                  ds["message"], myUserName == ds["sendBy"]);
+            })
+            : Center(child: CircularProgressIndicator());
+      },
+    );
+  }
+
   getAndSetMessages() async {
-    // messageStream = await DatabaseMethods().getChatRoomMessages(chatRoomId);
+    messageStream = await DatabaseMethods().getChatRoomMessages(chatRoomId);
     setState(() {});
   }
 
@@ -116,7 +165,7 @@ class _ChatScreenState extends State<ChatScreen> {
       body: Container(
         child: Stack(
           children: [
-            // chatMessages(),
+            chatMessages(),
             Container(
               alignment: Alignment.bottomCenter,
               child: Container(
@@ -133,7 +182,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       child: TextField(
                         controller: messageTextEditingController,
                         onChanged: (value) {
-                          // addMessage(false);
+                          addMessage(false);
                         },
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
@@ -147,7 +196,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        // addMessage(true);
+                        addMessage(true);
                       },
                       child: Icon(
                         Icons.send_rounded,
